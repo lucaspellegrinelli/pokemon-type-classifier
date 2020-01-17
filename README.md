@@ -12,7 +12,7 @@ The .csv used to get the pokemon type from it's pokedex id was taken from [veeku
 ![](https://i.imgur.com/Y7AiT7L.jpg) ![](https://i.imgur.com/umSI8lZ.jpg)
 
 ## The model
-Using the Google's InceptionV3 pretrained model as a base model, I trained a fine tuned version of it to tackle the project.
+For the project I decided to use the lightweight SqueezeNet architecture (arXiv 1602.07360) simply because the model is not that complicated to fit and the model file is small. The implementation of this model was taken from DT42's github (https://github.com/DT42/squeezenet_demo/) and modified a little to become a multi-label model.
 
 ## The results
 TODO

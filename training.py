@@ -1,4 +1,4 @@
-from model import ModelCreator
+from model import SqueezeNet
 from dataset import DatasetHandler
 from defs import *
 
@@ -42,7 +42,8 @@ print("Number of images of each type:")
 df_dataset.drop("path", axis=1).sum().sort_values(ascending=False)
 
 # Creates the model
-model = ModelCreator.create_model()
+model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
+                   inputs=(3, configs["img_size"][0], configs["img_size"][1]))
 
 # Compiles the model
 model.compile(optimizer='adam', loss='binary_crossentropy')
