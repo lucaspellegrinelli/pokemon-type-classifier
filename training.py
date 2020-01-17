@@ -20,7 +20,8 @@ devices = {
 }
 
 print("Parsed -device:", args.device, "=", devices[args.device])
-print("Parsed --colab", args.colab)
+print("Parsed --colab:", args.colab)
+print("\n")
 
 with tf.device(devices[args.device]):
   # Creates the dataset
@@ -68,9 +69,9 @@ with tf.device(devices[args.device]):
   # Compiles the model
   model.compile(optimizer='adam', loss='binary_crossentropy')
 
-  base_path = "/content/gdrive/My Drive/" if args.colab else ""
+  base_path = "/content/gdrive/My Drive/" if args.colab else "models/"
   callbacks = [
-    ModelCheckpoint(base_path + "models/pkm_model-{val_loss:.4f}.hdf5",
+    ModelCheckpoint(base_path + "pkm_model-{val_loss:.4f}.hdf5",
                     monitor='val_loss', verbose=1, save_best_only=True, mode='auto')
   ]
 
