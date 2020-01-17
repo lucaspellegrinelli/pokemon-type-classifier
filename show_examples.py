@@ -22,6 +22,15 @@ print("Parsed -device:", args.device, "=", devices[args.device])
 print("Parsed --model", args.model)
 print("\n")
 
+image_path = "dataset/images/"
+types_csv_path = "dataset/pokemon_types.csv"
+data_gen = ImageDataGenerator(
+  rescale=1.0 / 255.0,
+  validation_split=0.2,
+  zoom_range=0.15,
+  horizontal_flip=True,
+  fill_mode="nearest"
+)
 ds_handler = DatasetHandler(image_path, types_csv_path, data_gen)
 df_dataset, train_generator, valid_generator = ds_handler.create_dataset(verbose=True)
 
