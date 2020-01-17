@@ -6,7 +6,7 @@ import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-with tf.device("/device:XLA_CPU:0"):
+with tf.device("/device:CPU:0"):
   # Creates the dataset
   image_path = "dataset/images/"
   types_csv_path = "dataset/pokemon_types.csv"

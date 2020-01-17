@@ -1,6 +1,6 @@
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Activation, Concatenate
-from tensorflow.keras.layers import Flatten, Dropout
+from tensorflow.keras.layers import Flatten, Dropout, Dense
 from tensorflow.keras.layers import Convolution2D, MaxPooling2D
 from tensorflow.keras.layers import GlobalAveragePooling2D
 
@@ -120,6 +120,6 @@ def SqueezeNet(nb_classes, inputs):
         padding='valid', name='conv10')(fire9_dropout)
 
     global_avgpool10 = GlobalAveragePooling2D(data_format='channels_first')(conv10)
-    out = Dense(nb_classes), activation='sigmoid')(global_avgpool10)
+    out = Dense(nb_classes, activation='sigmoid')(global_avgpool10)
 
     return Model(inputs=input_img, outputs=out)
