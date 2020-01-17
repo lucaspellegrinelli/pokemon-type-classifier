@@ -5,7 +5,7 @@ from defs import *
 import argparse
 
 import tensorflow as tf
-from tensorflow.keras.callbacks import ModelCheckpoint
+from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
 
@@ -36,7 +36,8 @@ with tf.device(devices[args.device]):
     validation_split=0.2,
     zoom_range=0.15,
     horizontal_flip=True,
-    fill_mode="nearest"
+    fill_mode="nearest",
+    rotation_range=20
   )
 
   ds_handler = DatasetHandler(image_path, types_csv_path, data_gen)
@@ -78,7 +79,8 @@ with tf.device(devices[args.device]):
   base_path = "/content/gdrive/My Drive/" if args.colab else "models/"
   callbacks = [
     ModelCheckpoint(base_path + "pkm_model-{val_loss:.4f}.hdf5",
-                    monitor='val_loss', verbose=1, save_best_only=True, mode='auto')
+                    monitor='val_loss', verbose=1, save_best_only=True, mode='auto'),
+    EarlyStopping(monitor='val_loss', patience=15)
   ]
 
   # Training time!
