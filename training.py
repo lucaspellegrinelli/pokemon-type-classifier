@@ -7,10 +7,12 @@ import argparse
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.models import load_model
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)
 parser.add_argument("--colab", action='store_true', dest='colab', default=False, required=False)
+parser.add_argument("--model", action='store', dest='model', required=False)
 args = parser.parse_args()
 
 devices = {
@@ -21,6 +23,8 @@ devices = {
 
 print("Parsed -device:", args.device, "=", devices[args.device])
 print("Parsed --colab:", args.colab)
+if args.model:
+  print("Parsed --model", args.model)
 print("\n")
 
 with tf.device(devices[args.device]):
@@ -61,13 +65,15 @@ with tf.device(devices[args.device]):
   df_dataset.drop("path", axis=1).sum().sort_values(ascending=False)
 
   # Creates the model
-  model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
-                     inputs=(configs["img_size"][0], configs["img_size"][1], 3))
+  if args.model:
+    model = load_model(args.model)
+  else:
+    model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
+                       inputs=(configs["img_size"][0], configs["img_size"][1], 3))
+
+    model.compile(optimizer='adam', loss='binary_crossentropy')
 
   print(model.summary())
-
-  # Compiles the model
-  model.compile(optimizer='adam', loss='binary_crossentropy')
 
   base_path = "/content/gdrive/My Drive/" if args.colab else "models/"
   callbacks = [
