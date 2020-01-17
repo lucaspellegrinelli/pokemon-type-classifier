@@ -10,15 +10,17 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)
+parser.add_argument("--colab", action='store_true', dest='colab', default=False, required=False)
 args = parser.parse_args()
-
-print("Parsed Device:", args.device)
 
 devices = {
   "cpu": "/device:CPU:0",
   "gpu": "/device:GPU:0",
   "xlagpu": "/device:XLA_GPU:0"
 }
+
+print("Parsed -device:", args.device, "=", devices[args.device])
+print("Parsed --colab", args.colab)
 
 with tf.device(devices[args.device]):
   # Creates the dataset
@@ -66,9 +68,10 @@ with tf.device(devices[args.device]):
   # Compiles the model
   model.compile(optimizer='adam', loss='binary_crossentropy')
 
+  base_path = "/content/gdrive/My Drive/" if args.colab else ""
   callbacks = [
-    ModelCheckpoint("models/pkm_model-{val_loss:.4f}.hdf5", monitor='val_loss',
-                    verbose=1, save_best_only=True, mode='auto')
+    ModelCheckpoint(base_path + "models/pkm_model-{val_loss:.4f}.hdf5",
+                    monitor='val_loss', verbose=1, save_best_only=True, mode='auto')
   ]
 
   # Training time!
