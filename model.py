@@ -52,9 +52,7 @@ def SqueezeNet(nb_classes, inputs):
         128, (3, 3), activation='relu', kernel_initializer='glorot_uniform',
         padding='same', name='fire4_expand2')(fire4_squeeze)
     merge4 = Concatenate(axis=1)([fire4_expand1, fire4_expand2])
-    maxpool4 = MaxPooling2D(
-        pool_size=(3, 3), strides=(2, 2), name='maxpool4',
-        )(merge4)
+    maxpool4 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), name='maxpool4',)(merge4)
 
     fire5_squeeze = Convolution2D(
         32, (1, 1), activation='relu', kernel_initializer='glorot_uniform',
@@ -100,9 +98,7 @@ def SqueezeNet(nb_classes, inputs):
         padding='same', name='fire8_expand2')(fire8_squeeze)
     merge8 = Concatenate(axis=1)([fire8_expand1, fire8_expand2])
 
-    maxpool8 = MaxPooling2D(
-        pool_size=(3, 3), strides=(2, 2), name='maxpool8',
-        )(merge8)
+    maxpool8 = MaxPooling2D(pool_size=(3, 3), strides=(2, 2), name='maxpool8')(merge8)
     fire9_squeeze = Convolution2D(
         64, (1, 1), activation='relu', kernel_initializer='glorot_uniform',
         padding='same', name='fire9_squeeze')(maxpool8)
@@ -116,10 +112,10 @@ def SqueezeNet(nb_classes, inputs):
 
     fire9_dropout = Dropout(0.5, name='fire9_dropout')(merge9)
     conv10 = Convolution2D(
-        nb_classes, (1, 1), activation='relu', kernel_initializer='glorot_uniform',
+        32, (1, 1), activation='relu', kernel_initializer='glorot_uniform',
         padding='valid', name='conv10')(fire9_dropout)
 
-    global_avgpool10 = GlobalAveragePooling2D(data_format='channels_first')(conv10)
+    global_avgpool10 = GlobalAveragePooling2D()(conv10)
     out = Dense(nb_classes, activation='sigmoid')(global_avgpool10)
 
     return Model(inputs=input_img, outputs=out)
