@@ -2,11 +2,25 @@ from model import SqueezeNet
 from dataset import DatasetHandler
 from defs import *
 
+import argparse
+
 import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
-with tf.device("/device:CPU:0"):
+parser = argparse.ArgumentParser()
+parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)
+args = parser.parse_args()
+
+print("Parsed Device:", args.device)
+
+devices = {
+  "cpu": "/device:CPU:0",
+  "gpu": "/device:GPU:0",
+  "xlagpu": "/device:XLA_GPU:0"
+}
+
+with tf.device(devices[args.device]):
   # Creates the dataset
   image_path = "dataset/images/"
   types_csv_path = "dataset/pokemon_types.csv"
