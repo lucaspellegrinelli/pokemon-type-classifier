@@ -47,7 +47,7 @@ with tf.device("/device:CPU:0"):
   model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
                      inputs=(configs["img_size"][0], configs["img_size"][1], 3))
 
-  print(mode.summary())
+  print(model.summary())
 
   # Compiles the model
   model.compile(optimizer='adam', loss='binary_crossentropy')
