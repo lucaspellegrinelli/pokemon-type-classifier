@@ -4,7 +4,7 @@ from tensorflow.keras.layers import Flatten, Dropout
 from tensorflow.keras.layers import Convolution2D, MaxPooling2D
 from tensorflow.keras.layers import GlobalAveragePooling2D
 
-def MyModel(nb_classes, inputs):
+def SqueezeNet(nb_classes, inputs):
     """ Keras Implementation of SqueezeNet(arXiv 1602.07360)
 
     @param nb_classes: total number of final categories
@@ -120,6 +120,6 @@ def MyModel(nb_classes, inputs):
         padding='valid', name='conv10')(fire9_dropout)
 
     global_avgpool10 = GlobalAveragePooling2D(data_format='channels_first')(conv10)
-    sigmoid = Activation("sigmoid", name='sigmoid')(global_avgpool10)
+    out = Dense(nb_classes), activation='sigmoid')(global_avgpool10)
 
-    return Model(inputs=input_img, outputs=sigmoid)
+    return Model(inputs=input_img, outputs=out)
