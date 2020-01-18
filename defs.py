@@ -8,7 +8,7 @@ global_consts = {
 
 configs = {
   "img_size": (100, 137),
-  "batch_size": 128,
+  "batch_size": 64,
   "epochs": 1000,
   "val_split": 0.2
 }
