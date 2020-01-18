@@ -15,7 +15,7 @@ The .csv used to get the pokemon type from it's pokedex id was taken from [veeku
 For the project I decided to use the lightweight SqueezeNet architecture (arXiv 1602.07360) simply because the model is not that complicated to fit and the model file is small. The implementation of this model was taken from DT42's github (https://github.com/DT42/squeezenet_demo/) and modified a little to become a multi-label model.
 
 ## The results (from validation data)
-This turned out to be a color classifier basically (lol). But to be fair, the task is actually pretty difficult since pokemons of each type doesn't have to share properties with each others and even if they do, with the amount of variety in each of the different cards make it a tough job. Some results are show as follows:
+This turned out to be alright, not the best results but I got really impressed by some of them. But to be fair, the task is actually pretty difficult since pokemons of each type doesn't have to share properties with each others and even if they do, with the amount of variety in each of the different cards make it a tough job. Some results are show as follows:
 
 |            Original Pokemon          |       Input Image / Predictions      |
 |:------------------------------------:|:------------------------------------:|
