@@ -1,4 +1,5 @@
 from dataset import DatasetHandler
+from defs import *
 
 import argparse
 
