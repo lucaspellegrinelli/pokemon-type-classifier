@@ -11,7 +11,7 @@ from tensorflow.keras.models import load_model
 parser = argparse.ArgumentParser()
 parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)
 parser.add_argument("-model", action='store', dest='model', required=True)
-parser.add_argument("-numexamples", action='store', dest='numexamples', default=8, required=False)
+parser.add_argument("-numexamples", type=int, action='store', dest='numexamples', default=8, required=False)
 args = parser.parse_args()
 
 devices = {
@@ -50,6 +50,6 @@ while example_count < args.numexamples:
     plt.imshow(image)
     plt.show()
     prediction = model.predict(np.expand_dims(image, axis=0))[0]
-    prediction_labeled = sorted(list(zip(prediction, types_label)), reverse=True)
+    prediction_labeled = sorted(list(zip(prediction, global_consts["types_label"])), reverse=True)
     for prob, name in prediction_labeled:
       print(name, prob * 100, "%")
