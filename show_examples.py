@@ -2,6 +2,7 @@ from dataset import DatasetHandler
 
 import argparse
 
+import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -10,6 +11,7 @@ from tensorflow.keras.models import load_model
 parser = argparse.ArgumentParser()
 parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)
 parser.add_argument("-model", action='store', dest='model', required=True)
+parser.add_argument("-numexamples", action='store', dest='numexamples', default=8, required=False)
 args = parser.parse_args()
 
 devices = {
@@ -19,7 +21,8 @@ devices = {
 }
 
 print("Parsed -device:", args.device, "=", devices[args.device])
-print("Parsed --model", args.model)
+print("Parsed -model", args.model)
+print("Parsed -numexamples", args.numexamples)
 print("\n")
 
 image_path = "dataset/images/"
@@ -36,11 +39,17 @@ df_dataset, train_generator, valid_generator = ds_handler.create_dataset(verbose
 
 model = load_model(args.model)
 
-x_batch, y_batch = valid_generator.next()
-for image in x_batch:
-  plt.imshow(image)
-  plt.show()
-  prediction = model.predict(np.expand_dims(image, axis=0))[0]
-  prediction_labeled = sorted(list(zip(prediction, types_label)), reverse=True)
-  for prob, name in prediction_labeled:
-    print(name, prob * 100, "%")
+example_count = 0
+
+while example_count < args.numexamples:
+  x_batch, y_batch = valid_generator.next()
+  for i, image in enumerate(x_batch):
+    example_count += 1
+    if example_count > args.numexamples:
+      break
+    plt.imshow(image)
+    plt.show()
+    prediction = model.predict(np.expand_dims(image, axis=0))[0]
+    prediction_labeled = sorted(list(zip(prediction, types_label)), reverse=True)
+    for prob, name in prediction_labeled:
+      print(name, prob * 100, "%")
