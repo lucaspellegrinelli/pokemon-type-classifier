@@ -14,5 +14,18 @@ The .csv used to get the pokemon type from it's pokedex id was taken from [veeku
 ## The model
 For the project I decided to use the lightweight SqueezeNet architecture (arXiv 1602.07360) simply because the model is not that complicated to fit and the model file is small. The implementation of this model was taken from DT42's github (https://github.com/DT42/squeezenet_demo/) and modified a little to become a multi-label model.
 
-## The results
-TODO
+## The results (from validation data)
+This turned out to be a color classifier basically (lol). But to be fair, the task is actually pretty difficult since pokemons of each type doesn't have to share properties with each others and even if they do, with the amount of variety in each of the different cards make it a tough job. Some results are show as follows:
+
+|            Original Pokemon          |       Input Image / Predictions      |
+|:------------------------------------:|:------------------------------------:|
+| ![](https://i.imgur.com/eh1yR1G.png) | ![](https://i.imgur.com/QL0qlz0.png) |
+| ![](https://i.imgur.com/LLiF9Y0.png) | ![](https://i.imgur.com/WglhWVB.png) |
+| ![](https://i.imgur.com/YOFYEqi.png) | ![](https://i.imgur.com/kSiSLaz.png) |
+| ![](https://i.imgur.com/GxmeOLI.png) | ![](https://i.imgur.com/RAQDUC8.png) |
+| ![](https://i.imgur.com/vBrk7p3.png) | ![](https://i.imgur.com/1ohSBbF.png) |
+| ![](https://i.imgur.com/FsAYaVM.png) | ![](https://i.imgur.com/46V6N48.png) |
+| ![](https://i.imgur.com/tTEokHj.png) | ![](https://i.imgur.com/Mi0YDYj.png) |
+| ![](https://i.imgur.com/NTjgkGo.png) | ![](https://i.imgur.com/B3JYZI9.png) |
+| ![](https://i.imgur.com/RM5RZOk.png) | ![](https://i.imgur.com/KwiB3ol.png) |
+| ![](https://i.imgur.com/wuzrsYS.png) | ![](https://i.imgur.com/SZkvZY9.png) |
