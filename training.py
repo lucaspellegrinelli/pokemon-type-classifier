@@ -36,7 +36,8 @@ with tf.device(devices[args.device]):
     validation_split=0.2,
     zoom_range=0.15,
     horizontal_flip=True,
-    fill_mode="nearest"
+    fill_mode="nearest",
+    rotation_range=20
   )
 
   ds_handler = DatasetHandler(image_path, types_csv_path, data_gen)
