@@ -11,7 +11,7 @@ from tensorflow.keras.models import load_model
 parser = argparse.ArgumentParser()
 parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)
 parser.add_argument("-model", action='store', dest='model', required=True)
-parser.add_argument("-numexamples", action='store', dest='numexamples', default=8, required=False)
+parser.add_argument("-numexamples", action='store', dest='model', default=8, required=False)
 args = parser.parse_args()
 
 devices = {
