@@ -1,5 +1,5 @@
 program: wandb_training.py
-method: grid
+method: random
 metric:
   name: val_loss
   goal: minimize
