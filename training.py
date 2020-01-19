@@ -9,7 +9,7 @@ import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
-from keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)

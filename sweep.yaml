@@ -1,21 +1,26 @@
-program: wandb_training.py
+program: train.py
 method: random
 metric:
-  name: val_loss
+  name: loss
   goal: minimize
 parameters:
-  learning_rate:
-    distribution: uniform
-    min: 0.0001
-    max: 0.1
-  batch_size:
-    distribution: int_uniform
-    min: 16
-    max: 256
   epochs:
     distribution: constant
     value: 25
-early_terminate:
-  type: hyperband
-  eta: 10
-  min_iter: 10
+  val_split:
+    distribution: constant
+    value: 0.2
+  batch_size:
+    distribution: int_uniform
+    min: 16
+    max: 512
+  zoom_range:
+    distribution: constant
+    value: 0.15
+  learning_rate:
+    distribution: log_uniform
+    min: -1
+    max: -10
+  rotation_range:
+    distribution: constant
+    value: 0.2

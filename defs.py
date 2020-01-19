@@ -7,7 +7,7 @@ global_consts = {
 }
 
 configs = {
-  "batch_size": 1024,
+  "batch_size": 64,
   "learning_rate": 0.001,
   "epochs": 1000,
   "img_size": (100, 137),
