@@ -6,9 +6,15 @@ global_consts = {
   ]
 }
 
+hyperparameter_defaults = {
+  "batch_size": 64,
+  "learning_rate": 0.001,
+  "epochs": 1000
+}
+
 configs = {
   "img_size": (100, 137),
-  "batch_size": 64,
-  "epochs": 1000,
-  "val_split": 0.2
+  "val_split": 0.2,
+  "zoom_range": 0.15,
+  "rotation_range": 0.2
 }

@@ -9,12 +9,12 @@ import tensorflow as tf
 from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import load_model
+from keras.optimizers import Adam
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)
 parser.add_argument("--colab", action='store_true', dest='colab', default=False, required=False)
 parser.add_argument("--model", action='store', dest='model', required=False)
-parser.add_argument("--wandb", action='store_true', dest='wandb', default=False, required=False)
 args = parser.parse_args()
 
 devices = {
@@ -25,15 +25,11 @@ devices = {
 
 print("Parsed -device:", args.device, "=", devices[args.device])
 print("Parsed --colab:", args.colab)
-print("Parsed --wandb:", args.wandb)
 if args.model:
   print("Parsed --model", args.model)
 print("\n")
 
-if args.wandb:
-  import wandb
-  from wandb.keras import WandbCallback
-  wandb.init(project="pokemon-type-classifier")
+hyperparameter = hyperparameter_defaults
 
 with tf.device(devices[args.device]):
   # Creates the dataset
@@ -41,11 +37,11 @@ with tf.device(devices[args.device]):
   types_csv_path = "dataset/pokemon_types.csv"
   data_gen = ImageDataGenerator(
     rescale=1.0 / 255.0,
-    validation_split=0.2,
-    zoom_range=0.15,
+    validation_split=configs["val_split"],
+    zoom_range=configs["zoom_range"],
     horizontal_flip=True,
     fill_mode="nearest",
-    rotation_range=20
+    rotation_range=configs["rotation_range"]
   )
 
   ds_handler = DatasetHandler(image_path, types_csv_path, data_gen)
@@ -71,7 +67,7 @@ with tf.device(devices[args.device]):
   # ghost        488
   # ice          370
   print("Number of images of each type:")
-  df_dataset.drop("path", axis=1).sum().sort_values(ascending=False)
+  print(df_dataset.drop("path", axis=1).sum().sort_values(ascending=False))
 
   # Creates the model
   if args.model:
@@ -80,13 +76,12 @@ with tf.device(devices[args.device]):
     model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
                        inputs=(configs["img_size"][0], configs["img_size"][1], 3))
 
+    optimizer = Adam(learning_rate=hyperparameter["learning_rate"])
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
   print(model.summary())
 
-  if args.wandb:
-    base_path = wandb.run.dir
-  elif args.colab:
+  if args.colab:
     base_path = "/content/gdrive/My Drive/"
   else:
     base_path = "models/"
@@ -97,16 +92,13 @@ with tf.device(devices[args.device]):
     EarlyStopping(monitor='val_loss', patience=15)
   ]
 
-  if args.wandb:
-    callbacks.append(WandbCallback())
-
   # Training time!
   history = model.fit_generator(
     generator=train_generator,
     steps_per_epoch=train_generator.n // train_generator.batch_size,
     validation_data=valid_generator,
     validation_steps=valid_generator.n // valid_generator.batch_size,
-    epochs=configs["epochs"],
+    epochs=hyperparameter["epochs"],
     verbose=1,
     callbacks=callbacks
   )
