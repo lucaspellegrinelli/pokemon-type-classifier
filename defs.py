@@ -6,13 +6,10 @@ global_consts = {
   ]
 }
 
-hyperparameter_defaults = {
+configs = {
   "batch_size": 64,
   "learning_rate": 0.001,
-  "epochs": 1000
-}
-
-configs = {
+  "epochs": 1000,
   "img_size": (100, 137),
   "val_split": 0.2,
   "zoom_range": 0.15,

@@ -29,8 +29,6 @@ if args.model:
   print("Parsed --model", args.model)
 print("\n")
 
-hyperparameter = hyperparameter_defaults
-
 with tf.device(devices[args.device]):
   # Creates the dataset
   image_path = "dataset/images/"
@@ -47,27 +45,7 @@ with tf.device(devices[args.device]):
   ds_handler = DatasetHandler(image_path, types_csv_path, data_gen)
   df_dataset, train_generator, valid_generator = ds_handler.create_dataset(verbose=True)
 
-  # Displays the number of images of each type
-  # water       1623
-  # normal      1311
-  # flying      1300
-  # psychic     1288
-  # grass       1027
-  # fire        1017
-  # poison       879
-  # ground       865
-  # electric     844
-  # bug          741
-  # dragon       740
-  # steel        707
-  # rock         666
-  # dark         652
-  # fighting     626
-  # fairy        523
-  # ghost        488
-  # ice          370
-  print("Number of images of each type:")
-  print(df_dataset.drop("path", axis=1).sum().sort_values(ascending=False))
+  print(df_dataset.head())
 
   # Creates the model
   if args.model:
@@ -76,7 +54,7 @@ with tf.device(devices[args.device]):
     model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
                        inputs=(configs["img_size"][0], configs["img_size"][1], 3))
 
-    optimizer = Adam(learning_rate=hyperparameter["learning_rate"])
+    optimizer = Adam(learning_rate=configs["learning_rate"])
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
   print(model.summary())
@@ -98,7 +76,7 @@ with tf.device(devices[args.device]):
     steps_per_epoch=train_generator.n // train_generator.batch_size,
     validation_data=valid_generator,
     validation_steps=valid_generator.n // valid_generator.batch_size,
-    epochs=hyperparameter["epochs"],
+    epochs=configs["epochs"],
     verbose=1,
     callbacks=callbacks
   )

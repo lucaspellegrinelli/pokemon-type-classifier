@@ -13,7 +13,7 @@ from keras.optimizers import Adam
 
 import wandb
 from wandb.keras import WandbCallback
-wandb.init(config=hyperparameter_defaults, project="pokemon-type-classifier")
+wandb.init(config=configs, project="pokemon-type-classifier")
 hyperparameter = wandb.config
 
 with tf.device("/device:GPU:0"):
@@ -22,18 +22,19 @@ with tf.device("/device:GPU:0"):
   types_csv_path = "dataset/pokemon_types.csv"
   data_gen = ImageDataGenerator(
     rescale=1.0 / 255.0,
-    validation_split=configs["val_split"],
-    zoom_range=configs["zoom_range"],
+    validation_split=hyperparameter["val_split"],
+    zoom_range=hyperparameter["zoom_range"],
     horizontal_flip=True,
     fill_mode="nearest",
-    rotation_range=configs["rotation_range"]
+    rotation_range=hyperparameter["rotation_range"]
   )
 
   ds_handler = DatasetHandler(image_path, types_csv_path, data_gen)
   df_dataset, train_generator, valid_generator = ds_handler.create_dataset(verbose=True)
 
   # Creates the model
-  model = SqueezeNet(nb_classes=len(global_consts["types_label"]), inputs=(configs["img_size"][0], configs["img_size"][1], 3))
+  model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
+                     inputs=(hyperparameter["img_size"][0], hyperparameter["img_size"][1], 3))
   optimizer = Adam(learning_rate=hyperparameter["learning_rate"])
   model.compile(optimizer='adam', loss='binary_crossentropy')
 

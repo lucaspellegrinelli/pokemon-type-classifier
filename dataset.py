@@ -22,30 +22,34 @@ class DatasetHandler:
 
   # With the pokemon pokedex id as input, this function returns in an
   # one-hot-encoding form their encoded types
-  def pokemon_to_label(self, pokemon_id):
-    pkm_types = np.array(self.types[self.types.pokemon_id == pokemon_id]["type_id"])
-    one_hot = [0] * len(global_consts["types_label"])
-    for t in pkm_types:
-      one_hot[t - 1] = 1
+  def pokemons_to_labels(self):
+    types_by_pokemon = {}
+    min_id = self.types.pokemon_id.min()
+    max_id = self.types[self.types.pokemon_id <= 1000].pokemon_id.max()
 
-    return one_hot
+    for i in range(min_id, max_id + 1):
+      types_id = all_types[all_types.pokemon_id == i]["type_id"].to_numpy()
+      one_hot = [0] * len(types_label)
+      for t_id in types_id:
+        one_hot[t_id - 1] = 1
+
+      types_by_pokemon[i] = one_hot
+
+    return types_by_pokemon
 
   # Creates a DataFrame with all pokemon image paths and their correspondent
   # one-hot-encoded types.
   def create_dataset(self, verbose=False):
-    dataset_cols = ["path"] + global_consts["types_label"]
-    dataset_df = pd.DataFrame(columns=dataset_cols)
+    types_by_pokemon = self.pokemons_to_labels()
 
-    for i, path in enumerate(self.image_paths):
-      if i % 1000 == 0 and verbose:
-        print("Loading images", str(i) + "/" + str(len(self.image_paths)))
-
+    paths, labels = [], []
+    for path in self.image_paths:
       pkm_id = int(path.split("/")[-1].split("-")[0])
-      pkm_entry = {"path": path}
-      for label, col in zip(self.pokemon_to_label(pkm_id), dataset_cols[1:]):
-        pkm_entry[col] = label
+      labels.append(types_by_pokemon[pkm_id])
+      paths.append(path)
 
-      dataset_df = dataset_df.append(pkm_entry, ignore_index=True)
+    dataset_df = pd.DataFrame(labels, columns=global_consts["types_label"])
+    dataset_df["path"] = paths
 
     train_gen, val_gen = self.create_data_generators(dataset_df)
     return dataset_df, train_gen, val_gen
