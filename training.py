@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-device", action='store', dest='device', default="cpu", required=False)
 parser.add_argument("--colab", action='store_true', dest='colab', default=False, required=False)
 parser.add_argument("--model", action='store', dest='model', required=False)
+parser.add_argument("--wandb", action='store_true', dest='wandb', default=False, required=False)
 args = parser.parse_args()
 
 devices = {
@@ -23,9 +24,15 @@ devices = {
 
 print("Parsed -device:", args.device, "=", devices[args.device])
 print("Parsed --colab:", args.colab)
+print("Parsed --wandb:", args.wandb)
 if args.model:
   print("Parsed --model", args.model)
 print("\n")
+
+if args.wandb:
+  import wandb
+  from wandb.keras import WandbCallback
+  wandb.init(project="pokemon-type-classifier")
 
 with tf.device(devices[args.device]):
   # Creates the dataset
@@ -76,12 +83,21 @@ with tf.device(devices[args.device]):
 
   print(model.summary())
 
-  base_path = "/content/gdrive/My Drive/" if args.colab else "models/"
+  if args.wandb:
+    base_path = wandb.run.dir
+  elif args.colab:
+    base_path = "/content/gdrive/My Drive/"
+  else:
+    base_path = "models/"
+
+  full_path = os.path.join(base_path, "pkm_model-{val_loss:.4f}.hdf5")
   callbacks = [
-    ModelCheckpoint(base_path + "pkm_model-{val_loss:.4f}.hdf5",
-                    monitor='val_loss', verbose=1, save_best_only=True, mode='auto'),
+    ModelCheckpoint(full_path, monitor='val_loss', verbose=1, save_best_only=True),
     EarlyStopping(monitor='val_loss', patience=15)
   ]
+
+  if args.wandb:
+    callbacks.append(WandbCallback())
 
   # Training time!
   history = model.fit_generator(
