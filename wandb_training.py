@@ -35,7 +35,7 @@ with tf.device("/device:GPU:0"):
   # Creates the model
   model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
                      inputs=(hyperparameter["img_size"][0], hyperparameter["img_size"][1], 3))
-  optimizer = Adam(learning_rate=hyperparameter["learning_rate"])
+  optimizer = Adam(lr=hyperparameter["learning_rate"])
   model.compile(optimizer='adam', loss='binary_crossentropy')
 
   full_path = os.path.join(wandb.run.dir, "pkm_model-{val_loss:.4f}.hdf5")
@@ -52,6 +52,6 @@ with tf.device("/device:GPU:0"):
     validation_data=valid_generator,
     validation_steps=valid_generator.n // valid_generator.batch_size,
     epochs=hyperparameter["epochs"],
-    verbose=1,
+    verbose=2,
     callbacks=callbacks
   )

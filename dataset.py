@@ -28,8 +28,8 @@ class DatasetHandler:
     max_id = self.types[self.types.pokemon_id <= 1000].pokemon_id.max()
 
     for i in range(min_id, max_id + 1):
-      types_id = all_types[all_types.pokemon_id == i]["type_id"].to_numpy()
-      one_hot = [0] * len(types_label)
+      types_id = self.types[self.types.pokemon_id == i]["type_id"].to_numpy()
+      one_hot = [0] * len(global_consts["types_label"])
       for t_id in types_id:
         one_hot[t_id - 1] = 1
 

@@ -42,9 +42,9 @@ with tf.device(devices[args.device]):
     rotation_range=configs["rotation_range"]
   )
 
+  print("Gathering data")
   ds_handler = DatasetHandler(image_path, types_csv_path, data_gen)
   df_dataset, train_generator, valid_generator = ds_handler.create_dataset(verbose=True)
-
   print(df_dataset.head())
 
   # Creates the model
@@ -54,7 +54,7 @@ with tf.device(devices[args.device]):
     model = SqueezeNet(nb_classes=len(global_consts["types_label"]),
                        inputs=(configs["img_size"][0], configs["img_size"][1], 3))
 
-    optimizer = Adam(learning_rate=configs["learning_rate"])
+    optimizer = Adam(lr=configs["learning_rate"])
     model.compile(optimizer='adam', loss='binary_crossentropy')
 
   print(model.summary())
