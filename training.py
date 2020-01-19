@@ -2,6 +2,7 @@ from model import SqueezeNet
 from dataset import DatasetHandler
 from defs import *
 
+import os
 import argparse
 
 import tensorflow as tf
