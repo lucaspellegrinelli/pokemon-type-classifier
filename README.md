@@ -24,7 +24,7 @@ This turned out to be alright, not the best results but I got really impressed b
 | ![](https://i.imgur.com/YOFYEqi.png) | ![](https://i.imgur.com/kSiSLaz.png) |
 | ![](https://i.imgur.com/GxmeOLI.png) | ![](https://i.imgur.com/RAQDUC8.png) |
 | ![](https://i.imgur.com/vBrk7p3.png) | ![](https://i.imgur.com/1ohSBbF.png) |
-| ![](https://i.imgur.com/FsAYaVM.png) | ![](https://i.imgur.com/46V6N48.png) |
+| ![](https://i.imgur.com/NFTvT1k.png) | ![](https://i.imgur.com/46V6N48.png) |
 | ![](https://i.imgur.com/tTEokHj.png) | ![](https://i.imgur.com/Mi0YDYj.png) |
 | ![](https://i.imgur.com/NTjgkGo.png) | ![](https://i.imgur.com/B3JYZI9.png) |
 | ![](https://i.imgur.com/RM5RZOk.png) | ![](https://i.imgur.com/KwiB3ol.png) |
